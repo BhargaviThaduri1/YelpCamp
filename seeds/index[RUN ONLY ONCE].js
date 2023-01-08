@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 
 // -------------Requiring the cities file-----
-const cities = require('../seeds/cities');
+const cities = require('./cities');
 
 // ------------Requiring the descriptors and Places file
-const {places,descriptors} = require('../seeds/descriptorsAndplaces');
+const {places,descriptors} = require('./descriptorsAndplaces');
 
 mongoose.set('strictQuery',true);
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
