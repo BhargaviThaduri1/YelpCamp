@@ -1,3 +1,4 @@
+// Some random Cities
 module.exports = [
     {
         city: "New York",

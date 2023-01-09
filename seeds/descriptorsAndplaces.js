@@ -1,3 +1,4 @@
+// Some random descriptors and places
 module.exports.descriptors = [
     'Forest',
     'Ancient',
