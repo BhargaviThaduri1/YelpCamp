@@ -67,6 +67,7 @@ app.get('/campgrounds/:id/edit', async (req,res)=>{
     res.render('campgrounds/edit',{campground});
 })
 
+
 // Route which actually update a campground
 app.put('/campgrounds/:id/edit', async (req,res)=>{
     const {id} = req.params;
@@ -75,12 +76,13 @@ app.put('/campgrounds/:id/edit', async (req,res)=>{
 })
 
 
-
+// Route which deletes a campground and then redirecting to campgrounds
 app.delete('/campgrounds/:id', async (req,res)=>{
-    const {id} = req.params.id;
+    const {id} = req.params;
     await Campground.findByIdAndDelete(id)
     res.redirect('/campgrounds');
 })
+
 
 // App Listening on the port
 app.listen(3000,()=>{
