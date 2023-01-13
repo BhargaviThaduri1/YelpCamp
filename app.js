@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const Joi = require('joi');
+const {campgroundSchema} = require('./schemas.js')
 
 // Requiring the campground model
 const Campground = require('./models/campground');
@@ -39,6 +39,21 @@ Creates reusable code that will meet our goal to reduce duplicating code. like u
 */
 app.engine('ejs',ejsMate)
 
+
+// Validating the campground using JOI validateCampground is a middleware which will be applied to put and post requests
+// campgroundSchema is in the file schemas.js
+
+const validateCampground =(req,res,next)=>{ 
+    const {error} = campgroundSchema.validate(req.body);
+    if(error){
+    const msg = error.details.map(el=> el.message).join(',');
+    throw new ExpressError(msg,400);
+    }
+    else{
+        next();
+    }
+}
+
 // Home Route
 app.get('/',(req,res)=>{
    res.render('home.ejs');
@@ -60,25 +75,10 @@ app.get('/campgrounds/new',(req,res)=>{
 /* Route for the post request in creating the campground and then redirecting to show page 
 /campgrounds/:id--> show the details of campground
 */
-app.post('/campgrounds/new',catchAsync(async (req,res,next)=>{
+app.post('/campgrounds/new',validateCampground,catchAsync(async (req,res,next)=>{
     // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
     
     // Validating the req.body using JOI before even creating the campground
-    const campgroundSchema = Joi.object({
-        campground:Joi.object({
-            title:Joi.string().required(),
-            price:Joi.number().required().min(0),
-            image:Joi.string().required(),
-            location:Joi.string(),
-            description:Joi.string()
-        }).required()
-    })
-    const {error} = campgroundSchema.validate(req.body);
-    if(error){
-        const msg = error.details.map(el=> el.message).join(',');
-        throw new ExpressError(msg,400);
-    }
-
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -103,7 +103,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req,res)=>{
 
 
 // Route which actually update a campground
-app.put('/campgrounds/:id/edit', catchAsync(async (req,res)=>{
+app.put('/campgrounds/:id/edit', validateCampground,catchAsync(async (req,res)=>{
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground});
     res.redirect(`/campgrounds/${campground._id}`);
