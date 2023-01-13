@@ -50,10 +50,15 @@ app.get('/campgrounds/new',(req,res)=>{
 /* Route for the post request in creating the campground and then redirecting to show page 
 /campgrounds/:id--> show the details of campground
 */
-app.post('/campgrounds/new',async (req,res)=>{
+app.post('/campgrounds/new',async (req,res,next)=>{
+    try{
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
+    }
+    catch(err){
+        next(err);
+    }
 })
 
 
@@ -88,6 +93,11 @@ app.delete('/campgrounds/:id', async (req,res)=>{
     res.redirect('/campgrounds');
 })
 
+
+// Route which is Custom Error Handler
+app.use((err,req,res,next)=>{
+    res.send('Oh Boy! There is an Error');
+})
 
 // App Listening on the port
 app.listen(3000,()=>{
