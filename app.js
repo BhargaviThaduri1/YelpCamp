@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const Joi = require('joi');
 
 // Requiring the campground model
 const Campground = require('./models/campground');
@@ -32,7 +33,10 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(methodOverride('_method'));
 
-// App to use ejsMate engine
+/* 
+App to use ejsMate engine
+Creates reusable code that will meet our goal to reduce duplicating code. like using layouts,partials
+*/
 app.engine('ejs',ejsMate)
 
 // Home Route
@@ -57,7 +61,24 @@ app.get('/campgrounds/new',(req,res)=>{
 /campgrounds/:id--> show the details of campground
 */
 app.post('/campgrounds/new',catchAsync(async (req,res,next)=>{
-    if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
+    // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
+    
+    // Validating the req.body using JOI before even creating the campground
+    const campgroundSchema = Joi.object({
+        campground:Joi.object({
+            title:Joi.string().required(),
+            price:Joi.number().required().min(0),
+            image:Joi.string().required(),
+            location:Joi.string(),
+            description:Joi.string()
+        }).required()
+    })
+    const {error} = campgroundSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el=> el.message).join(',');
+        throw new ExpressError(msg,400);
+    }
+
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
