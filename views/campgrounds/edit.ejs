@@ -9,25 +9,36 @@
     <!--Centering the form to the center by using offset   -->
     <div class="col-6 offset-3">
 
-      <form action="/campgrounds/<%= campground._id %>/edit?_method=PUT " method="post">
+      <form action="/campgrounds/<%= campground._id %>/edit?_method=PUT " method="post" class="validate-form"
+        novalidate>
 
         <!-- Campground Title -->
         <div class="mb-3">
           <label class="form-label" for="title">Title</label>
-          <input class="form-control" type="text" name="campground[title]" id="title" value="<%= campground.title %> ">
+          <input class="form-control" type="text" name="campground[title]" id="title" value="<%= campground.title %> "
+            required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
         </div>
 
         <!-- Campground Loaction -->
         <div class="mb-3">
           <label class="form-label" for="loc">Location</label>
           <input class="form-control" type="text" name="campground[location]" id="loc"
-            value="<%= campground.location %> ">
+            value="<%= campground.location %> " required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
         </div>
 
         <!-- Campground Image Url -->
         <div class="mb-3">
           <label class="form-label" for="image">Image Url</label>
           <input class="form-control" type="text" name="campground[image]" id="image" value="<%= campground.image %> ">
+          <div class="valid-feedback">
+            Looks good!
+          </div>
         </div>
 
         <!-- Campground Price -->
@@ -38,16 +49,22 @@
               <span class="input-group-text" id="price">$</span>
             </div>
             <input type="text" class="form-control" placeholder="0.00" aria-label="Username" id="price"
-              value="<%= campground.price %> " name="campground[price]" aria-describedby="price">
+              value="<%= campground.price %> " name="campground[price]" aria-describedby="price" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
           </div>
         </div>
 
         <!-- Campground Description -->
         <div class="mb-3">
           <label class="form-label" for="description">Description </label>
-          <textarea class="form-control px-0" type="text" name="campground[description]" id="description">
+          <textarea class="form-control px-0" type="text" name="campground[description]" id="description" required>
              <%= campground.description %> 
             </textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
         </div>
 
         <!-- Edit button -->

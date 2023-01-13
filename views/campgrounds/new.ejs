@@ -9,24 +9,33 @@
         <!-- Centering the form using offset -->
         <div class="col-6 offset-3">
 
-            <form action="/campgrounds/new" method="post">
+            <form action="/campgrounds/new" method="post" class="validate-form" novalidate>
 
                 <!-- Campground Title -->
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" name="campground[title]" id="title">
+                    <input class="form-control" type="text" name="campground[title]" id="title" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <!-- Campground Location -->
                 <div class="mb-3">
                     <label class="form-label" for="loc">Location</label>
-                    <input class="form-control" type="text" name="campground[location]" id="loc">
+                    <input class="form-control" type="text" name="campground[location]" id="loc" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <!-- Campground Image Url -->
                 <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" name="campground[image]" id="image">
+                    <input class="form-control" type="text" name="campground[image]" id="image" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <!-- Campground Price -->
@@ -37,15 +46,21 @@
                             <span class="input-group-text" id="price">$</span>
                         </div>
                         <input type="text" class="form-control" placeholder="0.00" aria-label="Username" id="price"
-                            name="campground[price]" aria-describedby="price">
+                            name="campground[price]" aria-describedby="price" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
                 </div>
 
                 <!-- Campground Description -->
                 <div class="mb-3">
                     <label class="form-label" for="description">Description </label>
-                    <textarea class="form-control" type="text" name="campground[description]"
-                        id="description"></textarea>
+                    <textarea class="form-control" type="text" name="campground[description]" id="description"
+                        required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
 
                 <!-- Campground Add Button -->
