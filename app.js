@@ -9,8 +9,8 @@ const Campground = require('./models/campground');
 const methodOverride = require('method-override');
 
 // Requiring Error Utlilites 
-const ExpressError = require('./Error Utlis/ExpressError');
-const catchAsync   = require('./Error Utlis/catchAsync');
+const ExpressError = require('./errorutlis/ExpressError');
+const catchAsync   = require('./errorutlis/catchAsync');
 
 
 // Mongoose Connection
@@ -105,7 +105,7 @@ app.all('*',(req,res,next)=>{
 // Route which is Custom Error Handler
 app.use((err,req,res,next)=>{
     const {statusCode=500,message='OH boy there is an error'} = err;
-    res.status(statusCode).send(message);
+    res.status(statusCode).render('campgrounds/error',{err});
 })
 
 // App Listening on the port
