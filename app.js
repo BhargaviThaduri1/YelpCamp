@@ -108,9 +108,10 @@ app.post('/campgrounds/new',validateCampground,catchAsync(async (req,res,next)=>
 
 
 // Route which displays the details of a campground
+// And also display the reviews for each campground by populating the reviews
 app.get('/campgrounds/:id', catchAsync(async(req,res)=>{
     const {id} = req.params;
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('reviews');
     res.render('campgrounds/show',{campground});
 }))
 
