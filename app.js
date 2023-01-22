@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 // EJS Mate to allow app to use layouts and partials
 const ejsMate = require('ejs-mate');
-const {campgroundSchema} = require('./models/joi models/schemas.js')
+const {campgroundSchema,reviewSchema} = require('./models/joi models/schemas.js')
 
 // Requiring the campground model
 const Campground = require('./models/campground');
@@ -45,9 +45,9 @@ Creates reusable code that will meet our goal to reduce duplicating code. like u
 app.engine('ejs',ejsMate)
 
 
-// Validating the campground before campground is even created using JOI validateCampground is a middleware which will be applied to put and post requests
-// campgroundSchema is in the file schemas.js
-
+/*alidating the campground before campground is even created using JOI validateCampground is a middleware which will be applied to put and post requests
+ campgroundSchema is in the file schemas.js
+*/
 const validateCampground =(req,res,next)=>{ 
     const {error} = campgroundSchema.validate(req.body);
     if(error){
@@ -57,6 +57,22 @@ const validateCampground =(req,res,next)=>{
     else{
         next();
     }
+}
+
+/*alidating the review  before review is even created using JOI validateReview is a middleware which will be applied to put and post requests
+ reviewSchema is in the file schemas.js
+ This middleware should be applied to post and put request while creating the review
+*/
+
+const validateReview = (req,res,next)=>{
+    const {error} = reviewSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el=> el.message).join(',');
+        throw new ExpressError(msg,400);
+        }
+        else{
+            next();
+        }
 }
 
 // Home Route
@@ -124,7 +140,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req,res)=>{
 
 
 // ----------------Reviews post route-----------
-app.post('/campgrounds/:id/reviews',catchAsync(async(req,res)=>{
+app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     campground.reviews.push(review);
