@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+
+// EJS Mate to allow app to use layouts and partials
 const ejsMate = require('ejs-mate');
 const {campgroundSchema} = require('./models/joi models/schemas.js')
 
@@ -31,6 +33,7 @@ app.set('views',path.join(__dirname,'views'));
 // By default req.body is empty req.body should be parsed
 app.use(express.urlencoded({extended:true}));
 
+// Overriding the method for put and delete requests
 app.use(methodOverride('_method'));
 
 /* 
@@ -40,7 +43,7 @@ Creates reusable code that will meet our goal to reduce duplicating code. like u
 app.engine('ejs',ejsMate)
 
 
-// Validating the campground using JOI validateCampground is a middleware which will be applied to put and post requests
+// Validating the campground before campground is even created using JOI validateCampground is a middleware which will be applied to put and post requests
 // campgroundSchema is in the file schemas.js
 
 const validateCampground =(req,res,next)=>{ 
