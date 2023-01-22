@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const {campgroundSchema} = require('./schemas.js')
+const {campgroundSchema} = require('./models/joi models/schemas.js')
 
 // Requiring the campground model
 const Campground = require('./models/campground');
