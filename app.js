@@ -59,11 +59,10 @@ const validateCampground =(req,res,next)=>{
     }
 }
 
-/*alidating the review  before review is even created using JOI validateReview is a middleware which will be applied to put and post requests
+/*validating the review  before review is even created using JOI validateReview is a middleware which will be applied to put and post requests
  reviewSchema is in the file schemas.js
  This middleware should be applied to post and put request while creating the review
 */
-
 const validateReview = (req,res,next)=>{
     const {error} = reviewSchema.validate(req.body);
     if(error){
@@ -95,6 +94,7 @@ app.get('/campgrounds/new',(req,res)=>{
 
 /* Route for the post request in creating the campground and then redirecting to show page 
 /campgrounds/:id--> show the details of campground
+validating the review  before review is even created using validateCampground Middleware which uses JOI
 */
 app.post('/campgrounds/new',validateCampground,catchAsync(async (req,res,next)=>{
     // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
@@ -107,9 +107,11 @@ app.post('/campgrounds/new',validateCampground,catchAsync(async (req,res,next)=>
 }))
 
 
-// Route which displays the details of a campground
-// And also display the reviews for each campground by populating the reviews
-app.get('/campgrounds/:id', catchAsync(async(req,res)=>{
+/*
+ Route which displays the details of a campground
+ And also display the reviews for each campground by populating the reviews
+*/
+ app.get('/campgrounds/:id', catchAsync(async(req,res)=>{
     const {id} = req.params;
     const campground = await Campground.findById(id).populate('reviews');
     res.render('campgrounds/show',{campground});
@@ -132,7 +134,10 @@ app.put('/campgrounds/:id/edit', validateCampground,catchAsync(async (req,res)=>
 }))
 
 
-// Route which deletes a campground and then redirecting to campgrounds
+/* Route which deletes a campground and then redirecting to campgrounds
+   And also deletes all the reviews which are associated to that campground by using
+   campgroundSchema.post('findoneAndDelete',(data)) post middleware in campground model
+ */
 app.delete('/campgrounds/:id', catchAsync(async (req,res)=>{
     const {id} = req.params;
     await Campground.findByIdAndDelete(id)
@@ -144,7 +149,11 @@ app.delete('/campgrounds/:id', catchAsync(async (req,res)=>{
 
 // ---------------------Reviews Routes----------------------
 
-// ----------------Reviews post route-----------
+/* ----------------Reviews post route-----------
+ The form is on show page of a campground
+ Finds the campground with the id(foundCampground), creates a review,
+ adds that review to the reviews array of the foundCampground by pushing capground.reviews.push(review)
+*/
 app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
@@ -155,7 +164,10 @@ app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
 }))
 
 
-// ----------------Delete a review-----------------
+/* ----------------Delete a review-----------------
+ Removing the review in review model and also in campground model (reviews array[])
+ Delete a review in campground reviews array by using $pull:{reviews:reviewId} which pulls all the ids which matches to reviewId in reviews array
+*/
 app.delete('/campgrounds/:id/reviews/:reviewId',catchAsync(async(req,res)=>{
     const {id,reviewId} = req.params;
     await Campground.findByIdAndUpdate(id,{ $pull:{reviews:reviewId}});
