@@ -14,7 +14,9 @@
   <!-- Including the navbar Partial -->
   <%- include('../partials/navbar') %>
     <main class="container mt-5">
-      <%-body%>
+      <!-- Adding the success message which we can directly access the variables of flashes  -->
+      <%=success%>
+        <%-body%>
     </main>
     <!-- Including the footer Partial -->
     <%- include('../partials/footer') %>

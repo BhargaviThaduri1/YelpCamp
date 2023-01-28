@@ -49,6 +49,7 @@ router.post('/new',validateCampground,catchAsync(async (req,res,next)=>{
     // Validating the req.body using JOI before even creating the campground
     const campground = new Campground(req.body.campground);
     await campground.save();
+    req.flash('success','Successfully saved campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
     
 }))

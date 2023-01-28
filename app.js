@@ -13,8 +13,13 @@ const methodOverride = require('method-override');
 const campgroundRoute = require('./routes/campground')
 const reviewRoute = require('./routes/reviews')
 
+const ExpressError = require('./errorutlis/ExpressError');
+
 // Requiring the session
 const session = require('express-session')
+
+// Requring a flash
+const flash = require('connect-flash')
 
 // Mongoose Connection
 mongoose.set('strictQuery',true);
@@ -56,6 +61,15 @@ const sessionOptions = {
 // App to use session with the sessionOptions and session exprires within 1 week 1000* 60*60*24*7
 app.use(session(sessionOptions));
 
+// App to use for every single request
+app.use(flash());
+
+// Add a variable success which can be used by any template which is going to render i.e in index.ejs,edit.ejs
+app.use((req,res,next)=>{
+    res.locals.success = req.flash('success');
+    next();
+})
+
 // Home Route
 app.get('/',(req,res)=>{
    res.render('home.ejs');
@@ -64,8 +78,7 @@ app.get('/',(req,res)=>{
 // campground routes
 app.use('/campgrounds',campgroundRoute)
 
-// review routes
-// If we want to access :id params in the reviews route file then set mergeParams:true in reviews.js file
+// Review routes.If we want to access :id params in the reviews route file then set mergeParams:true in reviews.js file
 app.use('/campgrounds/:id/reviews',reviewRoute)
 
 
