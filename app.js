@@ -33,6 +33,8 @@ app.use(express.urlencoded({extended:true}));
 // Overriding the method for put and delete requests
 app.use(methodOverride('_method'));
 
+// To use static files like js and css
+app.use(express.static(path.join(__dirname,'public')))
 //App to use ejsMate engine Creates reusable code that will meet our goal to reduce duplicating code. like using layouts,partials
 app.engine('ejs',ejsMate)
 
