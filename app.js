@@ -13,6 +13,9 @@ const methodOverride = require('method-override');
 const campgroundRoute = require('./routes/campground')
 const reviewRoute = require('./routes/reviews')
 
+// Requiring the session
+const session = require('express-session')
+
 // Mongoose Connection
 mongoose.set('strictQuery',true);
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
@@ -35,8 +38,23 @@ app.use(methodOverride('_method'));
 
 // To use static files like js and css
 app.use(express.static(path.join(__dirname,'public')))
+
 //App to use ejsMate engine Creates reusable code that will meet our goal to reduce duplicating code. like using layouts,partials
 app.engine('ejs',ejsMate)
+
+const sessionOptions = {
+    secret:'thisshouldbebettersecret',
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        httpOnly:true,
+        expires:Date.now() + 1000*60*60*24*7,
+        maxAge:1000*60*60*24*7
+    }
+}
+
+// App to use session with the sessionOptions and session exprires within 1 week 1000* 60*60*24*7
+app.use(session(sessionOptions));
 
 // Home Route
 app.get('/',(req,res)=>{
