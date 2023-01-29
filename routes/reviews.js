@@ -41,9 +41,9 @@ router.post('/',validateReview,catchAsync(async(req,res)=>{
     campground.reviews.push(review);
     await review.save();
     await campground.save();
+    req.flash('success','Successfully created a new Review!!')
     res.redirect(`/campgrounds/${campground._id}`);
 }))
-
 
 /* ----------------Delete a review-----------------
  Removing the review in review model and also in campground model (reviews array[])
@@ -53,6 +53,7 @@ router.delete('/:reviewId',catchAsync(async(req,res)=>{
     const {id,reviewId} = req.params;
     await Campground.findByIdAndUpdate(id,{ $pull:{reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);
+    req.flash('success','Successfully Deleted Review!!')
     res.redirect(`/campgrounds/${id}`);
 }))
 

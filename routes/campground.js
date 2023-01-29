@@ -49,7 +49,7 @@ router.post('/new',validateCampground,catchAsync(async (req,res,next)=>{
     // Validating the req.body using JOI before even creating the campground
     const campground = new Campground(req.body.campground);
     await campground.save();
-    req.flash('success','Successfully saved campground!!')
+    req.flash('success','Successfully made a new campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
     
 }))
@@ -77,6 +77,7 @@ router.get('/:id/edit', catchAsync(async (req,res)=>{
 router.put('/:id/edit', validateCampground,catchAsync(async (req,res)=>{
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground});
+    req.flash('success','Successfully updated campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
@@ -88,6 +89,7 @@ router.put('/:id/edit', validateCampground,catchAsync(async (req,res)=>{
 router.delete('/:id', catchAsync(async (req,res)=>{
     const {id} = req.params;
     await Campground.findByIdAndDelete(id)
+    req.flash('success','Successfully deleted campground!!')
     res.redirect('/campgrounds');
 }))
 
