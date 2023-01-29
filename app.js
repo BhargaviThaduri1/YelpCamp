@@ -13,6 +13,7 @@ const methodOverride = require('method-override');
 const campgroundRoute = require('./routes/campground')
 const reviewRoute = require('./routes/reviews')
 
+// Express Error
 const ExpressError = require('./errorutlis/ExpressError');
 
 // Requiring the session
