@@ -65,9 +65,10 @@ app.use(session(sessionOptions));
 // App to use for every single request
 app.use(flash());
 
-// Add a variable success which can be used by any template which is going to render i.e in index.ejs,edit.ejs
+// Add a variable success/errors which can be used by any template which is going to render i.e in index.ejs,edit.ejs
 app.use((req,res,next)=>{
     res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 })
 
