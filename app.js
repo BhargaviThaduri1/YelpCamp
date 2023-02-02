@@ -13,14 +13,18 @@ const methodOverride = require('method-override');
 const campgroundRoute = require('./routes/campground')
 const reviewRoute = require('./routes/reviews')
 
+const User = require('./models/User')
+
 // Express Error
 const ExpressError = require('./errorutlis/ExpressError');
 
-// Requiring the session
-const session = require('express-session')
+const session = require('express-session');
+const flash = require('connect-flash');
 
-// Requring a flash
-const flash = require('connect-flash')
+// Configuring passport
+const passport = require('passport');
+const LocalStrategy = require('passport-local')
+
 
 // Mongoose Connection
 mongoose.set('strictQuery',true);
@@ -61,9 +65,20 @@ const sessionOptions = {
 
 // App to use session with the sessionOptions and session exprires within 1 week 1000* 60*60*24*7
 app.use(session(sessionOptions));
-
 // App to use for every single request
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser()); 
+
+app.get('/fakeregister',async(req,res)=>{
+    const user = new User({email:'bhargavi@gmail.com',username:'Bhargavi'});
+    const newUser = await User.register(user,'monkey');
+    res.send(newUser);
+})
 
 // Add a variable success/errors which can be used by any template which is going to render i.e in index.ejs,edit.ejs
 app.use((req,res,next)=>{
