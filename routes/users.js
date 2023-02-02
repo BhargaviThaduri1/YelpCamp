@@ -1,4 +1,5 @@
 const express = require('express');
+const User = require('../models/User');
 const router = express.Router();
 
 router.get('/register',(req,res)=>{
@@ -6,7 +7,17 @@ router.get('/register',(req,res)=>{
 })
 
 router.post('/register',async(req,res)=>{
-    res.send(req.body);
+    try{
+    const {email , username,password} = req.body;
+    const user =  new User({email,username});
+    const registeredUser = await User.register(user,password)
+    req.flash('success','Welcome to Yelp Camp!!')
+   res.redirect('/campgrounds');
+    }
+    catch(err){
+        req.flash('error',err.message);
+        res.redirect('/register')
+    }
 })
 
 module.exports = router;
