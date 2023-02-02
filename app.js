@@ -9,10 +9,13 @@ const ejsMate = require('ejs-mate');
 // Overrides post as put or delete requests
 const methodOverride = require('method-override');
 
-// Requiring the campground and reviews routes
-const campgroundRoute = require('./routes/campground')
-const reviewRoute = require('./routes/reviews')
+// Requiring the campground and reviews,users routes
+const campgroundRoutes = require('./routes/campground')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users');
 
+
+// Requring the userModel for passport
 const User = require('./models/User')
 
 // Express Error
@@ -93,11 +96,13 @@ app.get('/',(req,res)=>{
 })
 
 // campground routes
-app.use('/campgrounds',campgroundRoute)
+app.use('/campgrounds',campgroundRoutes)
 
 // Review routes.If we want to access :id params in the reviews route file then set mergeParams:true in reviews.js file
-app.use('/campgrounds/:id/reviews',reviewRoute)
+app.use('/campgrounds/:id/reviews',reviewRoutes)
 
+// Users routes like register..
+app.use('/',userRoutes);
 
 // Any other route
 app.all('*',(req,res,next)=>{
