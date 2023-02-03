@@ -77,11 +77,6 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser()); 
 
-app.get('/fakeregister',async(req,res)=>{
-    const user = new User({email:'bhargavi@gmail.com',username:'Bhargavi'});
-    const newUser = await User.register(user,'monkey');
-    res.send(newUser);
-})
 
 // Add a variable success/errors which can be used by any template which is going to render i.e in index.ejs,edit.ejs
 app.use((req,res,next)=>{
