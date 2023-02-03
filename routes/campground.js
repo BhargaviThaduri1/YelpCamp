@@ -12,6 +12,7 @@ const {campgroundSchema} = require('../models/joi models/schemas.js')
 const ExpressError = require('../errorutlis/ExpressError');
 const catchAsync   = require('../errorutlis/catchAsync');
 
+const {isLoggedIn} = require('../middlewares')
 
 /*Validating the campground before campground is even created using JOI validateCampground is a middleware which will be applied to put and post requests
  campgroundSchema is in the file schemas.js
@@ -35,7 +36,7 @@ router.get('/', catchAsync(async (req,res)=>{
 
 
 // Route to create a new Campground
-router.get('/new',(req,res)=>{
+router.get('/new',isLoggedIn,(req,res)=>{
     res.render('campgrounds/new');
 })
 
