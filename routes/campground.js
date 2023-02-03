@@ -44,7 +44,7 @@ router.get('/new',isLoggedIn,(req,res)=>{
 /campgrounds/:id--> show the details of campground
 validating the review  before review is even created using validateCampground Middleware which uses JOI
 */
-router.post('/new',validateCampground,catchAsync(async (req,res,next)=>{
+router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)=>{
     // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
     
     // Validating the req.body using JOI before even creating the campground
