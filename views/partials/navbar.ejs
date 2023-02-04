@@ -11,9 +11,13 @@
             <a class="nav-item nav-link" href="/campgrounds/new">New Campground</a>
         </div>
         <div class="navbar-nav ms-auto ">
-            <a class="nav-item nav-link" href="/register">Register</span></a>
-            <a class="nav-item nav-link" href="/login">Login</a>
-            <a class="nav-item nav-link" href="/logout">Logout</a>
+            <!-- If a user has not logged in then register and login links will be shown else only logout link will be enabled -->
+            <% if(!currentUser){ %>
+                <a class="nav-item nav-link" href="/register">Register</span></a>
+                <a class="nav-item nav-link" href="/login">Login</a>
+                <% } else{ %>
+                    <a class="nav-item nav-link" href="/logout">Logout</a>
+                    <% } %>
         </div>
     </div>
 </nav>

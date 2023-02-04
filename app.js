@@ -80,6 +80,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Add a variable success/errors which can be used by any template which is going to render i.e in index.ejs,edit.ejs
 app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
