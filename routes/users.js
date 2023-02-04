@@ -26,13 +26,16 @@ router.get('/login',(req,res)=>{
 })
 
 router.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login',successFlash:true}),(req,res)=>{
+    console.log("Successfully loggedIn")
+    console.log("Here is the user",req.user.username)
     req.flash('success','Welcome Back!!')
     res.redirect('/campgrounds');
 })
 
 router.get('/logout',(req,res)=>{
+   console.log("User with name",req.user.username)
    req.logout(()=>{
-    console.log("SUCCESSFULLY LOGGEDOUT")
+    console.log("Successfully logged you out")
    });
    res.redirect('/campgrounds');
 })
