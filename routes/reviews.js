@@ -6,7 +6,7 @@ const Campground = require('../models/campground');
 const Review = require('../models/review')
 
 const catchAsync   = require('../errorutlis/catchAsync');
-const {validateReview, isLoggedIn} =require('../middlewares')
+const {validateReview, isLoggedIn,isReviewAuthor} =require('../middlewares')
 
 
 
@@ -30,7 +30,7 @@ router.post('/',isLoggedIn,validateReview,catchAsync(async(req,res)=>{
  Removing the review in review model and also in campground model (reviews array[])
  Delete a review in campground reviews array by using $pull:{reviews:reviewId} which pulls all the ids which matches to reviewId in reviews array
 */
-router.delete('/:reviewId',catchAsync(async(req,res)=>{
+router.delete('/:reviewId',isLoggedIn,isReviewAuthor,catchAsync(async(req,res)=>{
     const {id,reviewId} = req.params;
     await Campground.findByIdAndUpdate(id,{ $pull:{reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);

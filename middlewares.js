@@ -1,6 +1,7 @@
 const ExpressError = require('./errorutlis/ExpressError');
 const {campgroundSchema,reviewSchema} = require('./models/joi models/schemas.js')
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req,res,next)=>{
     console.log('Req.user',req.user)
@@ -53,4 +54,16 @@ module.exports.validateReview = (req,res,next)=>{
         else{
             next();
         }
+}
+
+module.exports.isReviewAuthor = async (req,res,next)=>{
+    const {id,reviewId} = req.params;
+    const campground = await Campground.findById(id);
+    const review = await Review.findById(reviewId);
+    if(!review.author.equals(req.user._id) ){
+        console.log('User:',req.user.username,'Dont have the permission on ',req.method,'method for a review')
+        req.flash('error','You dont have the permission to edit/delete review.')
+        return res.redirect(`/campgrounds/${campground._id}`)
+    }
+    next();
 }
