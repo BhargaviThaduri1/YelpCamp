@@ -49,6 +49,7 @@ router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)
     
     // Validating the req.body using JOI before even creating the campground
     const campground = new Campground(req.body.campground);
+    campground.author = req.user._id;
     await campground.save();
     req.flash('success','Successfully made a new campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
@@ -58,10 +59,11 @@ router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)
 /*
  Route which displays the details of a campground
  And also display the reviews for each campground by populating the reviews
+ And also display the author for each campground by populating the author field
 */
  router.get('/:id', catchAsync(async(req,res)=>{
     const {id} = req.params;
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate('reviews').populate('author');
     if(!campground){
         req.flash('error','Cannot find the campground');
         return res.redirect('/campgrounds');

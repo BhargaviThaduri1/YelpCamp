@@ -25,6 +25,11 @@
                     <li class="list-group-item text-muted">
                         <%= campground.location %>
                     </li>
+                    <li class="list-group-item">Sbumitted by-
+                        <b>
+                            <%= campground.author.username %>
+                        </b>
+                    </li>
                     <li class="list-group-item">$<%= campground.price %>/night</li>
                 </ul>
 
