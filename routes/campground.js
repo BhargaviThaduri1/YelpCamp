@@ -87,7 +87,12 @@ router.get('/:id/edit', catchAsync(async (req,res)=>{
 // Route which actually update a campground
 router.put('/:id/edit', validateCampground,catchAsync(async (req,res)=>{
     const {id} = req.params;
-    const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground});
+    const campground = await Campground.findById(id);
+    if(!campground.author.equals(req.user._id)){
+        req.flash('error','You dont have the permission to edit campground!!')
+        return res.redirect(`/campgrounds/${campground._id}`)
+    }
+    const c = await Campground.findByIdAndUpdate(id,{...req.body.campground});
     req.flash('success','Successfully updated campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
 }))
