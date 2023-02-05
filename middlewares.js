@@ -30,7 +30,8 @@ module.exports.validateCampground =(req,res,next)=>{
 module.exports.isAuthor = async (req,res,next)=>{
     const {id} = req.params;
     const campground = await Campground.findById(id);
-    if(!campground.author.equals(req.user._id)){
+    console.log(campground);
+    if(!campground.author.equals(req.user._id) ){
         console.log('User:',req.user.username,'Dont have the permission on',req.method,'method for a campground')
         req.flash('error','You dont have the permission to edit/delete campground.')
         return res.redirect(`/campgrounds/${campground._id}`)

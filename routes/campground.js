@@ -19,7 +19,7 @@ router.get('/', catchAsync(async (req,res)=>{
 
 
 // Route to create a new Campground
-router.get('/new',isLoggedIn,isAuthor,(req,res)=>{
+router.get('/new',isLoggedIn,(req,res)=>{
     res.render('campgrounds/new');
 })
 
@@ -27,11 +27,10 @@ router.get('/new',isLoggedIn,isAuthor,(req,res)=>{
 /campgrounds/:id--> show the details of campground
 validating the review  before review is even created using validateCampground Middleware which uses JOI
 */
-router.post('/new',isLoggedIn,isAuthor,validateCampground,catchAsync(async (req,res,next)=>{
-    // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
-    
-    // Validating the req.body using JOI before even creating the campground
+router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)=>{
     const campground = new Campground(req.body.campground);
+    campground.author = req.user._id;
+    console.log(campground);
     await campground.save();
     req.flash('success','Successfully made a new campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
