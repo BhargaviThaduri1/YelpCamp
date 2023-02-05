@@ -34,13 +34,14 @@ router.post('/login',passport.authenticate('local',{failureFlash:true,failureRed
 }),(req,res)=>{
     req.flash('success','Welcome Back!!')
     const redirectUrl = req.session.returnTo || 'campgrounds'
-    console.log("Redirecting to the path",redirectUrl);
+    console.log('LoggedIn with User: ',req.user.username)
+    console.log("Redirecting to the path/",redirectUrl);
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 })
 
 router.get('/logout',(req,res)=>{
-   console.log("User with name",req.user.username)
+  
    req.logout(()=>{
     console.log("Successfully logged you out")
    });

@@ -5,30 +5,10 @@ const router = express.Router({mergeParams:true});
 const Campground = require('../models/campground');
 const Review = require('../models/review')
 
-
-// Requiring the campgroundSchema which is a Joi Model
-const {reviewSchema} = require('../models/joi models/schemas.js')
-
-
-// Requiring Error Utlilites 
-const ExpressError = require('../errorutlis/ExpressError');
 const catchAsync   = require('../errorutlis/catchAsync');
+const {validateReview} =require('../middlewares')
 
-/*
-validating the review  before review is even created using JOI validateReview is a middleware which will be applied to put and post requests
- reviewSchema is in the file schemas.js
- This middleware should be applied to post and put request while creating the review
-*/
-const validateReview = (req,res,next)=>{
-    const {error} = reviewSchema.validate(req.body);
-    if(error){
-        const msg = error.details.map(el=> el.message).join(',');
-        throw new ExpressError(msg,400);
-        }
-        else{
-            next();
-        }
-}
+
 
 /* ----------------Reviews post route-----------
  The form is on show page of a campground

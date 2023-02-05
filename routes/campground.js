@@ -4,39 +4,12 @@ const router = express.Router();
 // Requiring the campground model
 const Campground = require('../models/campground');
 
-// Requiring the campgroundSchema which is a Joi Model
-const {campgroundSchema} = require('../models/joi models/schemas.js')
-
 
 // Requiring Error Utlilites 
-const ExpressError = require('../errorutlis/ExpressError');
 const catchAsync   = require('../errorutlis/catchAsync');
 
-const {isLoggedIn} = require('../middlewares')
+const {isLoggedIn,isAuthor,validateCampground} = require('../middlewares')
 
-/*Validating the campground before campground is even created using JOI validateCampground is a middleware which will be applied to put and post requests
- campgroundSchema is in the file schemas.js
-*/
-const validateCampground =(req,res,next)=>{ 
-    const {error} = campgroundSchema.validate(req.body);
-    if(error){
-    const msg = error.details.map(el=> el.message).join(',');
-    throw new ExpressError(msg,400);
-    }
-    else{
-        next();
-    }
-}
-
-const isAuthor = async (req,res,next)=>{
-    const {id} = req.params;
-    const campground = await Campground.findById(id);
-    if(!campground.author.equals(req.user._id)){
-        req.flash('error','You dont have the permission to edit campground!!')
-        return res.redirect(`/campgrounds/${campground._id}`)
-    }
-    next();
-}
 
 // Route which displays all the campgrounds
 router.get('/', catchAsync(async (req,res)=>{
