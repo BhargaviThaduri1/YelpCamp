@@ -28,6 +28,16 @@ const validateCampground =(req,res,next)=>{
     }
 }
 
+const isAuthor = async (req,res,next)=>{
+    const {id} = req.params;
+    const campground = await Campground.findById(id);
+    if(!campground.author.equals(req.user._id)){
+        req.flash('error','You dont have the permission to edit campground!!')
+        return res.redirect(`/campgrounds/${campground._id}`)
+    }
+    next();
+}
+
 // Route which displays all the campgrounds
 router.get('/', catchAsync(async (req,res)=>{
     const campgrounds = await Campground.find({});
@@ -36,7 +46,7 @@ router.get('/', catchAsync(async (req,res)=>{
 
 
 // Route to create a new Campground
-router.get('/new',isLoggedIn,(req,res)=>{
+router.get('/new',isLoggedIn,isAuthor,(req,res)=>{
     res.render('campgrounds/new');
 })
 
@@ -44,12 +54,11 @@ router.get('/new',isLoggedIn,(req,res)=>{
 /campgrounds/:id--> show the details of campground
 validating the review  before review is even created using validateCampground Middleware which uses JOI
 */
-router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)=>{
+router.post('/new',isLoggedIn,isAuthor,validateCampground,catchAsync(async (req,res,next)=>{
     // if(!req.body.campground) throw new ExpressError('Invalid Campground Data',400);
     
     // Validating the req.body using JOI before even creating the campground
     const campground = new Campground(req.body.campground);
-    campground.author = req.user._id;
     await campground.save();
     req.flash('success','Successfully made a new campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
@@ -73,7 +82,7 @@ router.post('/new',isLoggedIn,validateCampground,catchAsync(async (req,res,next)
 
 
 // Route which renders the form to edit a campground
-router.get('/:id/edit', catchAsync(async (req,res)=>{
+router.get('/:id/edit',isLoggedIn, isAuthor,catchAsync(async (req,res)=>{
     const {id} = req.params;
     const campground = await Campground.findById(id);
     if(!campground){
@@ -85,14 +94,9 @@ router.get('/:id/edit', catchAsync(async (req,res)=>{
 
 
 // Route which actually update a campground
-router.put('/:id/edit', validateCampground,catchAsync(async (req,res)=>{
+router.put('/:id/edit',isLoggedIn,isAuthor,validateCampground,catchAsync(async (req,res)=>{
     const {id} = req.params;
-    const campground = await Campground.findById(id);
-    if(!campground.author.equals(req.user._id)){
-        req.flash('error','You dont have the permission to edit campground!!')
-        return res.redirect(`/campgrounds/${campground._id}`)
-    }
-    const c = await Campground.findByIdAndUpdate(id,{...req.body.campground});
+    const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground});
     req.flash('success','Successfully updated campground!!')
     res.redirect(`/campgrounds/${campground._id}`);
 }))
@@ -102,7 +106,7 @@ router.put('/:id/edit', validateCampground,catchAsync(async (req,res)=>{
    And also deletes all the reviews which are associated to that campground by using
    campgroundSchema.post('findoneAndDelete',(data)) post middleware in campground model
  */
-router.delete('/:id', catchAsync(async (req,res)=>{
+router.delete('/:id',isLoggedIn,isAuthor, catchAsync(async (req,res)=>{
     const {id} = req.params;
     await Campground.findByIdAndDelete(id)
     req.flash('success','Successfully deleted campground!!')
