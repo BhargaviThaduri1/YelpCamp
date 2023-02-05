@@ -6,7 +6,7 @@ const Campground = require('../models/campground');
 const Review = require('../models/review')
 
 const catchAsync   = require('../errorutlis/catchAsync');
-const {validateReview} =require('../middlewares')
+const {validateReview, isLoggedIn} =require('../middlewares')
 
 
 
@@ -15,10 +15,11 @@ const {validateReview} =require('../middlewares')
  Finds the campground with the id(foundCampground), creates a review,
  adds that review to the reviews array of the foundCampground by pushing capground.reviews.push(review)
 */
-router.post('/',validateReview,catchAsync(async(req,res)=>{
+router.post('/',isLoggedIn,validateReview,catchAsync(async(req,res)=>{
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     campground.reviews.push(review);
+    review.author = req.user._id;
     await review.save();
     await campground.save();
     req.flash('success','Successfully created a new Review!!')
