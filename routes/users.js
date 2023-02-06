@@ -2,50 +2,18 @@ const express = require('express');
 const passport = require('passport');
 const User = require('../models/User');
 const router = express.Router();
+const Users = require('../controllers/users')
 
-router.get('/register',(req,res)=>{
-    res.render('users/register')
-})
 
-router.post('/register',async(req,res,next)=>{
-    try{
-    const {email , username,password} = req.body;
-    const user =  new User({email,username});
-    const registeredUser = await User.register(user,password)
-    req.login(registeredUser,err=>{
-        if(err) next(err);
-        else{
-            req.flash('success','Welcome to Yelp Camp!!')
-            res.redirect('/campgrounds');
-        }
-    })
-    }
-    catch(err){
-        req.flash('error',err.message);
-        res.redirect('/register')
-    }
-})
+router.get('/register',Users.renderRegister)
 
-router.get('/login',(req,res)=>{
-    res.render('users/login');
-})
+router.post('/register',Users.register)
+
+router.get('/login',Users.renderLogin)
 
 router.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login',successFlash:true,    keepSessionInfo: true,
-}),(req,res)=>{
-    req.flash('success','Welcome Back!!')
-    const redirectUrl = req.session.returnTo || 'campgrounds'
-    console.log('LoggedIn with User: ',req.user.username)
-    console.log("Redirecting to the path/",redirectUrl);
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
-})
+}),Users.login)
 
-router.get('/logout',(req,res)=>{
-  
-   req.logout(()=>{
-    console.log("Successfully logged you out")
-   });
-   res.redirect('/campgrounds');
-})
+router.get('/logout',Users.logout)
 
 module.exports = router;
