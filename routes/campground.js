@@ -9,19 +9,19 @@ const {isLoggedIn,isAuthor,validateCampground} = require('../middlewares')
 
 router.get('/', catchAsync(campgrounds.index))
 
-router.get('/new',isLoggedIn,campgrounds.renderNewForm)
-
-router.post('/new',isLoggedIn,validateCampground,catchAsync(campgrounds.createCampground))
-
-router.get('/:id', catchAsync(campgrounds.showCampground))
+router.route('/new')
+    .get(isLoggedIn,campgrounds.renderNewForm)
+    .post(isLoggedIn,validateCampground,catchAsync(campgrounds.createCampground))
 
 
-router.get('/:id/edit',isLoggedIn, isAuthor,catchAsync(campgrounds.renderEditForm))
+router.route('/:id')
+    .get(catchAsync(campgrounds.showCampground))
+    .delete(isLoggedIn,isAuthor, catchAsync(campgrounds.deleteCampground))
 
 
-router.put('/:id/edit',isLoggedIn,isAuthor,validateCampground,catchAsync(campgrounds.updateCampground))
+router.route('/:id/edit')
+    .get(isLoggedIn, isAuthor,catchAsync(campgrounds.renderEditForm))
+    .put(isLoggedIn,isAuthor,validateCampground,catchAsync(campgrounds.updateCampground))
 
-
-router.delete('/:id',isLoggedIn,isAuthor, catchAsync(campgrounds.deleteCampground))
 
 module.exports = router;
