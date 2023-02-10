@@ -1,3 +1,12 @@
+// .env file helps to keep sensitve information if the app not yet live i.e currently we are in development mode 
+if(process.env.NODE_ENV!=="production"){
+    require('dotenv').config();
+}
+
+console.log(process.env.CLOUDINARY_CLOUD_NAME)
+console.log(process.env.CLOUDINARY_SECRET)
+console.log(process.env.CLOUDINARY_KEY)
+
 const express = require('express');
 const app = express();
 const path = require('path');
