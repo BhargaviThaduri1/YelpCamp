@@ -1,6 +1,5 @@
 <!-- Adding the layout  -->
 <% layout('layouts/boilerplate') -%>
-
     <!-- Displaying the html page in a row -->
     <div class="row">
 
@@ -9,7 +8,8 @@
         <!-- Centering the form using offset -->
         <div class="col-6 offset-3">
 
-            <form action="/campgrounds/new" method="post" class="validate-form" novalidate>
+            <form action="/campgrounds/new" method="post" class="validate-form" novalidate
+                enctype="multipart/form-data">
 
                 <!-- Campground Title -->
                 <div class="mb-3">
@@ -29,13 +29,17 @@
                     </div>
                 </div>
 
-                <!-- Campground Image Url -->
+                <!-- Campground Image Url
                 <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
                     <input class="form-control" type="text" name="campground[image]" id="image" required>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
+                </div> -->
+
+                <div class="mb-3">
+                    <input type="file" name="image" id="imagex" multiple>
                 </div>
 
                 <!-- Campground Price -->
