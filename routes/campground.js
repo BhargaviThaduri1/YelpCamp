@@ -13,11 +13,8 @@ router.get('/', catchAsync(campgrounds.index))
 
 router.route('/new')
     .get(isLoggedIn,campgrounds.renderNewForm)
-    // .post(isLoggedIn,validateCampground,catchAsync(campgrounds.createCampground))
-    .post(upload.array('image'),(req,res)=>{
-            console.log(req.body)
-            console.log(req.files)
-    })
+    .post(isLoggedIn,upload.array('image'),validateCampground,catchAsync(campgrounds.createCampground))
+    
 router.route('/:id')
     .get(catchAsync(campgrounds.showCampground))
     .delete(isLoggedIn,isAuthor, catchAsync(campgrounds.deleteCampground))
