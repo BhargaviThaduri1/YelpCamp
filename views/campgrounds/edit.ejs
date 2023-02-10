@@ -31,16 +31,6 @@
             Looks good!
           </div>
         </div>
-
-        <!-- Campground Image Url -->
-        <div class="mb-3">
-          <label class="form-label" for="image">Image Url</label>
-          <input class="form-control" type="text" name="campground[image]" id="image" value="<%= campground.image %> ">
-          <div class="valid-feedback">
-            Looks good!
-          </div>
-        </div>
-
         <!-- Campground Price -->
         <div class="mb-3">
           <label class="form-label" for="image">Price</label>
@@ -70,6 +60,7 @@
         <!-- Edit button -->
         <div class="mb-3 ">
           <button class="btn btn-success">Edit Campground</button>
+          <a href="/campgrounds/<%=campground._id%>/images" class="btn btn-info">Manage Images</a>
         </div>
 
       </form>
