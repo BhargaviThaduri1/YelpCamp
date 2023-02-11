@@ -29,7 +29,7 @@ router.route('/:id/images')
     .get(async(req,res)=>{
         const {id} = req.params;
         const campground = await Campground.findById(id);
-        res.render('images/show',{campground});   
+        res.render('campgrounds/images/manage',{campground});   
     })
     .post(upload.array('image'),catchAsync(async(req,res)=>{
         const {id} = req.params;
