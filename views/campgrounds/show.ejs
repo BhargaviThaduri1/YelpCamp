@@ -2,8 +2,12 @@
 <% layout('layouts/boilerplate') -%>
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="row">
-        <!-- Displaying the campground using a card -->
         <div class="col-6 <%= !currentUser ? 'offset-3': ''%>">
+
+            <!-- Displaying map for a campground -->
+            <div id="map" style="width: 400px; height:300px"></div>
+
+            <!-- Displaying the campground using a card -->
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <% campground.images.forEach((img,i)=>{ %>
@@ -125,3 +129,14 @@
         </div>
 
     </div>
+
+    <!-- DISPLAYING MAP USING JAVASCRIPT -->
+    <script>
+        mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-74.5, 40],
+            zoom: 6
+        });
+    </script>
