@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') -%>
   <h2>Add More Images to <b>
-      <%= campground.title %>
+      <%= campground.title %>?
     </b></h2>
   <div class="mb-3">
     <form action="/campgrounds/<%=campground._id %>/images" method="post" class="validate-form" novalidate
@@ -55,7 +55,7 @@
       <% } else { %>
         <input type="text" class="form-control" name="" id="" value="This campground has no images." readonly>
         <% } %>
-          <div class="mt-3">
+          <div class="mt-3 mb-3">
             <button class="btn btn-danger">Delete</button>
           </div>
   </form>

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const campgrounds = require('../controllers/campgrounds')
+const images = require('../controllers/images')
 const catchAsync   = require('../errorutlis/catchAsync');
 const {isLoggedIn,isAuthor,validateCampground} = require('../middlewares')
 const multer = require('multer');
@@ -26,37 +27,9 @@ router.route('/:id/edit')
     .put(isLoggedIn,isAuthor,validateCampground,catchAsync(campgrounds.updateCampground))
 
 router.route('/:id/images')
-    .get(async(req,res)=>{
-        const {id} = req.params;
-        const campground = await Campground.findById(id);
-        res.render('campgrounds/images/manage',{campground});   
-    })
-    .post(upload.array('image'),catchAsync(async(req,res)=>{
-        const {id} = req.params;
-        const campground = await Campground.findById(id);
-        const imgs = req.files.map(f=>({url:f.path,filename:f.filename}));
-        campground.images.push(...imgs);
-        await campground.save();
-        req.flash('success','Successfully Uploaded the Image(s)');
-        res.redirect(`/campgrounds/${campground._id}`);
-    }))
-    .delete(catchAsync(async(req,res)=>{
-        const {id} = req.params;
-        const campground = await Campground.findById(id);
-        // We have access to images which checked via req.body
-        console.log(req.body);
-        if(req.body.deleteImages){
-            // Deleting Images in Cloudinary
-            for(let filename of req.body.deleteImages){
-               await cloudinary.uploader.destroy(filename);
-            }
-            // Deleting Images in Mongo
-            await campground.updateOne({$pull:{images:{filename:{$in: req.body.deleteImages}}}});
-            req.flash('success','Successfully deleted Image(s)')
-            res.redirect(`/campgrounds/${campground._id}`);
-        }
-        
-    }))
+    .get(isLoggedIn,images.showCampgroundImages)
+    .post(isLoggedIn,isAuthor,upload.array('image'),catchAsync(images.addCampgroundImages))
+    .delete(isLoggedIn,isAuthor,catchAsync(images.deleteCampgroundImages))
 
 
 module.exports = router;
