@@ -2,9 +2,8 @@
 <% layout('layouts/boilerplate') -%>
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="row">
-
         <!-- Displaying the campground using a card -->
-        <div class="col-6">
+        <div class="col-6 <%= !currentUser ? 'offset-3': ''%>">
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <% campground.images.forEach((img,i)=>{ %>

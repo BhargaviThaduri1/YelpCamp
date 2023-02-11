@@ -4,7 +4,6 @@ const Campground = require('./models/campground');
 const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req,res,next)=>{
-    console.log('Req.user',req.user)
     if(!req.isAuthenticated()){
         req.session.returnTo = req.originalUrl;
         req.flash('error','You must be logged in first!')
@@ -31,7 +30,6 @@ module.exports.validateCampground =(req,res,next)=>{
 module.exports.isAuthor = async (req,res,next)=>{
     const {id} = req.params;
     const campground = await Campground.findById(id);
-    console.log(campground);
     if(!campground.author.equals(req.user._id) ){
         console.log('User:',req.user.username,'Dont have the permission on',req.method,'method for a campground')
         req.flash('error','You dont have the permission to edit/delete campground.')
