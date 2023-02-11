@@ -12,19 +12,25 @@ module.exports.renderNewForm = (req,res)=>{
 }
 module.exports.createCampground = async (req,res,next)=>{
     // GEOCODING THE LOCATIONS IT GIVES 1 RESULT AND THE LATTITUE AND LONGITUDE WILL BE IN GEOMETRY OBJECT.HENCE SELECTING FEATURES[0].GEOMETRY
+    // AFTER GETTING LONGITUDE AND LONGITUDE STORE THEM IN MONGO i.e STORE GEOMETRY(GEOJSON FORMAT)
     const geoData = await geoCoder.forwardGeocode({
-        query:'Telangana,India',
+        query:req.body.campground.location,
         limit:1
     }).send()
-    console.log(geoData.body.features[0].geometry);
-    res.send('okk');
-    // const campground = new Campground(req.body.campground);
-    // campground.author = req.user._id;
-    // // We have access to req.files=> which gives all the files which uploaded
-    // campground.images = req.files.map(f=>({url:f.path,filename:f.filename}))
-    // await campground.save();
-    // req.flash('success','Successfully made a new campground!!')
-    // res.redirect(`/campgrounds/${campground._id}`);
+
+    const campground = new Campground(req.body.campground);
+    campground.author = req.user._id;
+
+    // We have access to req.files=> which gives all the files which uploaded
+    campground.images = req.files.map(f=>({url:f.path,filename:f.filename}))
+
+    // Inserting geometry
+    campground.geometry = geoData.body.features[0].geometry;
+
+    await campground.save();
+
+    req.flash('success','Successfully made a new campground!!')
+    res.redirect(`/campgrounds/${campground._id}`);
     
 }
 module.exports.showCampground = async(req,res)=>{
