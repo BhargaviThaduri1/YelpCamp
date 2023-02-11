@@ -25,8 +25,8 @@
                 <div class="card-header bg-light border rounded " style="margin:5px; cursor:pointer;">
                   <input type="checkbox" name="deleteImages[]" class="form-check-input"
                     value="<%=campground.images[index].filename%>">
-                  <a href="<%=campground.images[index].url%>" title="click to view image">
-                    <img src="<%=campground.images[index].url%>" alt="" width="300" height="300">
+                  <a href="<%=campground.images[index].thumbnail%>" title="click to view image">
+                    <img src="<%=campground.images[index].thumbnail%>" alt="">
                   </a>
                 </div>
                 <% } %>
@@ -34,20 +34,20 @@
                     <div class="card-header bg-light border rounded " style="margin:5px; cursor:pointer;">
                       <input type="checkbox" name="deleteImages[]" class="form-check-input"
                         value="<%=campground.images[index+1].filename%>">
-                      <a href="<%=campground.images[index+1].url%>" title="click to view image">
-                        <img src="<%=campground.images[index+1].url%>" alt="" width="300" height="300"">
-                    </a>
-                  </div>
-                  <% } %>
-                    <% if(campground.images[index+2]){ %>
-                      <div class=" card-header bg-light border rounded" style="margin:5px; cursor:pointer;">
-                        <input type="checkbox" name="deleteImages[]" class="form-check-input"
-                          value="<%=campground.images[index+2].filename%>">
-                        <a href="<%=campground.images[index+2].url%>" title="click to view image">
-                          <img src="<%=campground.images[index+2].url%>" alt="" width="300" height="300">
-                        </a>
+                      <a href="<%=campground.images[index+1].thumbnail%>" title="click to view image">
+                        <img src="<%=campground.images[index+1].thumbnail%>" alt="">
+                      </a>
                     </div>
                     <% } %>
+                      <% if(campground.images[index+2]){ %>
+                        <div class=" card-header bg-light border rounded" style="margin:5px; cursor:pointer;">
+                          <input type="checkbox" name="deleteImages[]" class="form-check-input"
+                            value="<%=campground.images[index+2].filename%>">
+                          <a href="<%=campground.images[index+2].thumbnail%>" title="click to view image">
+                            <img src="<%=campground.images[index+2].thumbnail%>" alt="">
+                          </a>
+                        </div>
+                        <% } %>
             </div>
             <% } %>
               <% }) %>
