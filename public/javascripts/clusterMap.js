@@ -1,4 +1,6 @@
-mapboxgl.accessToken = mapToken;
+mapboxgl.accessToken = mapboxToken;
+campgrounds = JSON.parse(campgrounds);
+campgrounds = { features: campgrounds };
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
@@ -98,11 +100,13 @@ mapboxgl.accessToken = mapToken;
             );
         });
 
+        console.log(campgrounds)
         // When a click event occurs on a feature in
         // the unclustered-point layer, open a popup at
         // the location of the feature, with
         // description HTML from its properties.
         map.on('click', 'unclustered-point', (e) => {
+            const text = e.features[0].properties.popUpText;
             const coordinates = e.features[0].geometry.coordinates.slice();
             const mag = e.features[0].properties.mag;
             const tsunami =
@@ -118,7 +122,7 @@ mapboxgl.accessToken = mapToken;
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(
-                    `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+                    `${text}`
                 )
                 .addTo(map);
         });
