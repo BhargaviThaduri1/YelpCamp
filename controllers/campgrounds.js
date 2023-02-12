@@ -26,6 +26,7 @@ module.exports.createCampground = async (req,res,next)=>{
 
     // Inserting geometry
     campground.geometry = geoData.body.features[0].geometry;
+    console.log(campground.geometry);
 
     await campground.save();
 

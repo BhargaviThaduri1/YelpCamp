@@ -15,7 +15,7 @@ ImageSchema.virtual('thumbnail').get(function(){
 const CampgroundSchema = new Schema({
     title:String,
     images:[ImageSchema],
-    geometry:[{
+    geometry:{
         type:{
             type:String,
             enum:['Point'],
@@ -25,8 +25,8 @@ const CampgroundSchema = new Schema({
             type:[Number],
             required:true
         }
-    }],
-    price:Number,
+    },
+    price:Number,   
     description:String,
     location:String,
     author:{
