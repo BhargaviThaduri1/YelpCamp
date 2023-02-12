@@ -68,8 +68,6 @@
                         </div>
             </div>
         </div>
-
-
         <!-------Review for a Campground only if a user exists ------->
         <!------Validating it using bootstrap----->
         <div class="col-6">
@@ -130,7 +128,7 @@
 
     </div>
 
-    <!-- DISPLAYING MAP USING JAVASCRIPT -->
+    <!-- DISPLAYING MAP FOR A CAMPGROUND USING JAVASCRIPT -->
     <script>
         // ACCESSING CAMPGROUND AND MAPTOKEN
         let mapboxToken = `<%-process.env.MAPBOX_TOKEN%>`;
@@ -149,5 +147,13 @@
         //ADDING THE PATH 
         new mapboxgl.Marker()
             .setLngLat(campground.geometry.coordinates)
+            // WHEN A USER CLICKED AT POINTER THEN POPUP COMES WITH CAMPGROUND TITLE AND LOCATION
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 })
+                    .setHTML(
+                        `<h3>${campground.title}</h3><P>${campground.location}</P>`
+                    )
+            )
             .addTo(map)
+
     </script>
