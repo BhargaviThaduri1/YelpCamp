@@ -143,6 +143,7 @@
             center: campground.geometry.coordinates,
             zoom: 11
         });
+        map.addControl(new mapboxgl.NavigationControl());
 
         //ADDING THE PATH 
         new mapboxgl.Marker()

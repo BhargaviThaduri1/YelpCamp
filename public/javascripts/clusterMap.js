@@ -9,6 +9,10 @@ campgrounds = { features: campgrounds };
         zoom: 3
     });
 
+    // ADDING CONTROLS TO MAP LIKE ZOOM IN / ZOOM OUT
+    map.addControl(new mapboxgl.NavigationControl());
+
+
     map.on('load', () => {
         console.log("MAP LOADED");
         // Add a new source from our GeoJSON data and
