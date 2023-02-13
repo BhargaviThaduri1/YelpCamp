@@ -45,8 +45,8 @@ app.use(helmet);
 // STORING THE SESSIONS IN MONGO
 const mongoDBStore = require('connect-mongo');
 
-// const dbUrl = process.env.DB_URL
-const dbUrl = 'mongodb://localhost:27017/yelp-camp' 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp' 
+
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
 mongoose.set("strictQuery", false);
 mongoose.connect(dbUrl, {
@@ -77,10 +77,12 @@ app.use(express.static(path.join(__dirname,'public')))
 // APP TO USE EJS MATE
 app.engine('ejs',ejsMate)
 
+const secret = process.env.SECRET || 'thisshouldbebettersecret';
+
 // CHANGING THE DEFAULT MEMORY STORAGE OF SESSIONS TO MONGOSTORE (NEW COLLECTION)
 const store = new mongoDBStore({
     mongoUrl:dbUrl,
-    secret:'thisshouldbebettersecret',
+    secret:secret,
     // IF THERE IS A SAME USER WHO IS LOGGING IN THEN INSTEAD OF UPDATING IT SEVERAL TIMES UPDATE IT AFTER 24HRS
     touchAfter: 24 * 60 * 60
 })
@@ -98,7 +100,7 @@ const sessionOptions = {
     name:'session',
     // TO SECURE OUR COOKIE
     // secure:true,
-    secret:'thisshouldbebettersecret',
+    secret:secret,
     resave:false,
     saveUninitialized:true,
     cookie:{
