@@ -42,10 +42,18 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('./security/Helmet Configuration');
 app.use(helmet);
 
+// STORING THE SESSIONS IN MONGO
+const mongoDBStore = require('connect-mongo');
 
-// ESTABLISHING MONGOOSE CONNECTION
-mongoose.set('strictQuery',true);
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+// const dbUrl = process.env.DB_URL
+const dbUrl = 'mongodb://localhost:27017/yelp-camp' 
+// CONNECTING TO MONGO DATABASE USING MONGOOSE
+mongoose.set("strictQuery", false);
+mongoose.connect(dbUrl, {
+    // PASSING REQUIRED OPTIONS TO AVOID DEPRECIATION WARNINGS IN FUTURE
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 .then(()=>{
     console.log('Mongo Connection Open!');
 })
@@ -69,8 +77,23 @@ app.use(express.static(path.join(__dirname,'public')))
 // APP TO USE EJS MATE
 app.engine('ejs',ejsMate)
 
+// CHANGING THE DEFAULT MEMORY STORAGE OF SESSIONS TO MONGOSTORE (NEW COLLECTION)
+const store = new mongoDBStore({
+    mongoUrl:dbUrl,
+    secret:'thisshouldbebettersecret',
+    // IF THERE IS A SAME USER WHO IS LOGGING IN THEN INSTEAD OF UPDATING IT SEVERAL TIMES UPDATE IT AFTER 24HRS
+    touchAfter: 24 * 60 * 60
+})
+
+store.on("error",function(e){
+    console.log("ERROR STORING SESSIONS",e);
+})
+
+
 // CONFIGURING SESSION OPTIONS
 const sessionOptions = {
+    // STORE
+    store:store,
     // SETTING UP COOKIE NAME
     name:'session',
     // TO SECURE OUR COOKIE
