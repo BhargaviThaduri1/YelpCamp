@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user')
 
 // WHICH RENDERS A FORM
 module.exports.renderRegister = (req,res)=>{
