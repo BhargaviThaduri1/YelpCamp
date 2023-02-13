@@ -42,6 +42,11 @@ const LocalStrategy = require('passport-local')
 // EXPRESS MONGOOSE SANITIZE TO PREVENT MONGODB OPERATOR INJECTION
 const mongoSanitize = require('express-mongo-sanitize');
 
+// REQURING HELMET WHICH MAKES OUR APP MUCH SECURE
+const helmet = require('./security/Helmet Configuration');
+app.use(helmet);
+
+
 // ESTABLISHING MONGOOSE CONNECTION
 mongoose.set('strictQuery',true);
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
