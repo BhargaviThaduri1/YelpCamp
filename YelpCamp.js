@@ -22,7 +22,7 @@ const userRoutes = require('./routes/users');
 
 
 // REQURING USER MODEL FOR PASSPORT
-const User = require('./models/User')
+const User = require('./models/user')
 
 // REQUIRING EXPRESS ERROR
 const ExpressError = require('./errorutlis/ExpressError');
