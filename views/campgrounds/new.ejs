@@ -6,69 +6,68 @@
         <h1 class="text-center">New Camground</h1>
 
         <!-- Centering the form using offset -->
-        <div class="col-6 offset-3">
-            <div class="card shadow mt-4 mb-2">
-                <div class="card-body">
-                    <form action="/campgrounds/new" method="post" class="validate-form" novalidate
-                        enctype="multipart/form-data">
+        <div class="col-md-6 offset-md-3">
+            <form action="/campgrounds/new" method="post" class="validate-form" novalidate
+                enctype="multipart/form-data">
 
-                        <!-- Campground Title -->
-                        <div class="mb-3">
-                            <label class="form-label" for="title">Title</label>
-                            <input class="form-control" type="text" name="campground[title]" id="title" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-
-                        <!-- Campground Location -->
-                        <div class="mb-3">
-                            <label class="form-label" for="loc">Location</label>
-                            <input class="form-control" type="text" name="campground[location]" id="loc" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-
-                        <!-- Campground Image -->
-                        <div class="mb-3">
-                            <label for="formFileMultiple" class="form-label">Choose Images(s)</label>
-                            <input class="form-control" type="file" name="image" id="formFileMultiple" multiple>
-                        </div>
-
-
-                        <!-- Campground Price -->
-                        <div class="mb-3">
-                            <label class="form-label" for="image">Price</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="price">$</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" aria-label="Username"
-                                    id="price" name="campground[price]" aria-describedby="price" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Campground Description -->
-                        <div class="mb-3">
-                            <label class="form-label" for="description">Description </label>
-                            <textarea class="form-control" type="text" name="campground[description]" id="description"
-                                required></textarea>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-
-                        <!-- Campground Add Button -->
-                        <div class="mb-3">
-                            <button class="btn btn-success">Add Campground</button>
-                        </div>
-                    </form>
+                <!-- Campground Title -->
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" name="campground[title]" id="title" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
+
+                <!-- Campground Location -->
+                <div class="mb-3">
+                    <label class="form-label" for="loc">Location</label>
+                    <input class="form-control" type="text" name="campground[location]" id="loc" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+
+                <!-- Campground Image -->
+                <div class="mb-3">
+                    <label for="formFileMultiple" class="form-label">Choose Images(s)</label>
+                    <input class="form-control" type="file" name="image" id="formFileMultiple" multiple>
+                </div>
+
+
+                <!-- Campground Price -->
+                <div class="mb-3">
+                    <label class="form-label" for="image">Price</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="price">$</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="0.00" aria-label="Username" id="price"
+                            name="campground[price]" aria-describedby="price" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campground Description -->
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description </label>
+                    <textarea class="form-control" type="text" name="campground[description]" id="description"
+                        required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+
+                <!-- Campground Add Button -->
+                <div class="mb-3">
+                    <button class="btn btn-success">Add Campground</button>
+                </div>
+            </form>
+            <div class="mb-3">
+                <a href="/campgrounds" class="btn btn-secondary mt-2">Go Back</a>
             </div>
-            <a href="/campgrounds">All Campgrounds</a>
+
         </div>
     </div>

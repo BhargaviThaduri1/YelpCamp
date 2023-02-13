@@ -10,7 +10,7 @@ const campgrounds = require('../controllers/campgrounds')
 const Campground = require('../models/campground');
 
 // REQURING STORAGE AND CLOUDINARY
-const {storage,cloudinary} = require('../cloudinary/index');
+const {storage,cloudinary} = require('../cloudinary/cloudinary configuration');
 
 // REQURING MULTER WHICH PROCESS THE FILES
 const multer = require('multer');

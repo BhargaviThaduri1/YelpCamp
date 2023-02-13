@@ -1,12 +1,8 @@
-// .ENV FILE HELPS TO KEEP SENSITIVE INFORMATION IF THE APP IS NOT YEL LIVE I.E CURRENTLY WE ARE IN DEVELOPMENT MODE
+// .ENV FILE HELPS TO KEEP SENSITIVE INFORMATION IF THE APP IS NOT YEL LIVE.WHEN WE ARE IN "PRODUCTION MODE"
+// CAN ACCESS THOSE INFORMATION BY USING PROCESS.ENV.CLODINARY_CLOUD_NAME
 if(process.env.NODE_ENV!=="production"){
     require('dotenv').config();
 }
-
-// CREATING ENVIRONMENT VARIABLES FOR CLOUDINARY REGISTRATION
-// console.log(process.env.CLOUDINARY_CLOUD_NAME)
-// console.log(process.env.CLOUDINARY_SECRET)
-// console.log(process.env.CLOUDINARY_KEY)
 
 const express = require('express');
 const app = express();
@@ -75,7 +71,9 @@ app.engine('ejs',ejsMate)
 
 // CONFIGURING SESSION OPTIONS
 const sessionOptions = {
+    // SETTING UP COOKIE NAME
     name:'session',
+    // TO SECURE OUR COOKIE
     // secure:true,
     secret:'thisshouldbebettersecret',
     resave:false,
@@ -93,14 +91,14 @@ app.use(session(sessionOptions));
 // APP TO USE FLASH FOR EVERY SINGLE REQUEST
 app.use(flash());
 
-// CONFIGURING PASSPORT FOR AUTHENTICATION,SESSIONS
+// CONFIGURING PASSPORT FOR AUTHENTICATION, TO AUTOMATICALLY REMOVE/ADD A USER TO SESSION USING SERIALIZEUSER/DESERIALIZEUSER
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser()); 
 
-//  APP TO USE MONGO SANTIZE
+//  APP TO USE MONGO SANITIZE WHICH WILL STRIP OUT ANY KEYS  THAT START WITH '$' IN THE INPUT QUERY/PARAMS.
 app.use(mongoSanitize());
 
 // CREATING VARIABLES LIKE SUCCESS/ERRORS WHICH CAN BE USED BY ANY TEMPLATE WHICH THE APP RENDERS 
@@ -122,7 +120,7 @@ app.use('/campgrounds',campgroundRoutes)
 // ALL REVIEW ROUTES. (IF WE WANT TO ACCESS :ID PARAMS IN THE REVIEWS ROUTE FILE THEN SET MERGEPARAMS:TRUE IN REVIEW.JS ROUTE FILE)
 app.use('/campgrounds/:id/reviews',reviewRoutes)
 
-// ALL USERS ROUTES (REGISTER.JS)
+// ALL USERS ROUTES (REGISTER.EJS)
 app.use('/',userRoutes);
 
 // ANY OTHER ROUTE
