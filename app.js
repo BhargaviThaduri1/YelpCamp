@@ -39,6 +39,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local')
 
+// EXPRESS MONGOOSE SANITIZE TO PREVENT MONGODB OPERATOR INJECTION
+const mongoSanitize = require('express-mongo-sanitize');
 
 // ESTABLISHING MONGOOSE CONNECTION
 mongoose.set('strictQuery',true);
@@ -91,9 +93,12 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser()); 
 
+//  APP TO USE MONGO SANTIZE
+app.use(mongoSanitize());
 
 // CREATING VARIABLES LIKE SUCCESS/ERRORS WHICH CAN BE USED BY ANY TEMPLATE WHICH THE APP RENDERS 
 app.use((req,res,next)=>{
+    console.log(req.query);
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

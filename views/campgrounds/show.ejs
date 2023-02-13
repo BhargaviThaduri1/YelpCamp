@@ -2,10 +2,7 @@
 <% layout('layouts/boilerplate') -%>
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="row">
-        <div class="col-6 <%= !currentUser ? 'offset-3': ''%>">
-
-            <!-- Displaying map for a campground -->
-            <div id="map" style="width: 400px; height:300px"></div>
+        <div class="col-6">
 
             <!-- Displaying the campground using a card -->
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
@@ -71,6 +68,7 @@
         <!-------Review for a Campground only if a user exists ------->
         <!------Validating it using bootstrap----->
         <div class="col-6">
+            <div id="map" style="width: 400px; height:300px"></div>
             <% if(currentUser){ %>
                 <h2>Leave a Review</h2>
                 <form action="/campgrounds/<%= campground._id%>/reviews " method="post" class="mb-3 validate-form"
@@ -125,6 +123,7 @@
                         </div>
                         <% } %>
         </div>
+
 
     </div>
 
