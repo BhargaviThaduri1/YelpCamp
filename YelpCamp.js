@@ -77,7 +77,7 @@ app.use(express.static(path.join(__dirname,'public')))
 // APP TO USE EJS MATE
 app.engine('ejs',ejsMate)
 
-const secret = process.env.SECRET || 'thisshouldbebettersecret';
+const secret=process.env.SECRET || 'thisshouldbebettersecret';
 
 // CHANGING THE DEFAULT MEMORY STORAGE OF SESSIONS TO MONGOSTORE (NEW COLLECTION)
 const store = new mongoDBStore({
