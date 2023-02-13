@@ -70,6 +70,8 @@ app.engine('ejs',ejsMate)
 
 // CONFIGURING SESSION OPTIONS
 const sessionOptions = {
+    name:'session',
+    // secure:true,
     secret:'thisshouldbebettersecret',
     resave:false,
     saveUninitialized:true,
@@ -98,7 +100,6 @@ app.use(mongoSanitize());
 
 // CREATING VARIABLES LIKE SUCCESS/ERRORS WHICH CAN BE USED BY ANY TEMPLATE WHICH THE APP RENDERS 
 app.use((req,res,next)=>{
-    console.log(req.query);
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
