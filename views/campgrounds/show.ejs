@@ -1,6 +1,7 @@
 <!-- Adding the layout -->
 <% layout('layouts/boilerplate') -%>
     <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
     <div class="row">
         <div class="col-6">
 
@@ -46,7 +47,7 @@
                             <%= campground.author.username %>
                         </b>
                     </li>
-                    <li class="list-group-item">$<%= campground.price %>/night</li>
+                    <li class="list-group-item">Price- $<%= campground.price %>/night</li>
                 </ul>
 
                 <!-- Campground Edit and Delete buttons -->
@@ -68,9 +69,9 @@
         <!-------Review for a Campground only if a user exists ------->
         <!------Validating it using bootstrap----->
         <div class="col-6">
-            <div id="map" style="width: 400px; height:300px"></div>
+            <div id="map" class="mb-3"></div>
+            <h2>Leave a Review</h2>
             <% if(currentUser){ %>
-                <h2>Leave a Review</h2>
                 <form action="/campgrounds/<%= campground._id%>/reviews " method="post" class="mb-3 validate-form"
                     novalidate>
                     <div class="mb-3">
@@ -99,29 +100,32 @@
                     </div>
                     <button class="btn btn-success">Submit</button>
                 </form>
-                <% } %>
-                    <% for(let review of campground.reviews){ %>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h6 class="card-subtitle mb-2 ">
-                                    <%=review.author.username %>
-                                </h6>
-                                <p class="starability-result" data-rating="<%=review.rating%>">
-                                    Rated: 3 stars
-                                </p>
-                                <p class="card-text">Review:
-                                    <%= review.body %>
-                                </p>
-                                <% if(currentUser && review.author.equals(currentUser._id)){ %>
-                                    <form
-                                        action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE  "
-                                        method="post">
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                    <% } %>
+                <% }else{ %>
+                    <a href="/login" class="btn btn-secondary">Login</a>
+                    <a href="/register" class="btn btn-info">Register</a>
+                    <% } %>
+                        <% for(let review of campground.reviews){ %>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 ">
+                                        <%=review.author.username %>
+                                    </h6>
+                                    <p class="starability-result" data-rating="<%=review.rating%>">
+                                        Rated: 3 stars
+                                    </p>
+                                    <p class="card-text">Review:
+                                        <%= review.body %>
+                                    </p>
+                                    <% if(currentUser && review.author.equals(currentUser._id)){ %>
+                                        <form
+                                            action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE  "
+                                            method="post">
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                        <% } %>
+                                </div>
                             </div>
-                        </div>
-                        <% } %>
+                            <% } %>
         </div>
 
 
