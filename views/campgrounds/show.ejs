@@ -4,66 +4,73 @@
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <!-- Add stylesheet app.css for styling our map -->
     <link rel="stylesheet" href="/stylesheets/app.css">
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <!-- DISPLAYING THE CAMPGROUND USING CARD-->
-        <div class="col-6">
-            <!-- DISPLAYING IMAGES OF THE CAMPGROUND USING CAROUSEL -->
-            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <% campground.images.forEach((img,i)=>{ %>
-                        <div class="carousel-item <%= i==0 ? 'active':'' %>" data-bs-interval="10000">
-                            <img src="<%=img.url%>" class="d-block w-100" alt="">
+        <div class="col-lg-6 mb-3">
+            <div class="card">
+                <% if(campground.images.length> 0) { %>
+                    <!-- DISPLAYING IMAGES OF THE CAMPGROUND USING CAROUSEL -->
+                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+
+                            <% campground.images.forEach((img,i)=>{ %>
+                                <div class="carousel-item <%= i==0 ? 'active':'' %>" data-bs-interval="10000">
+                                    <a href="<%=img.url%>"><img src="<%=img.url%>" alt="" class="d-block w-100 pointer"
+                                            title="Click to view Image" crossorigin></a>
+                                </div>
+                                <% })%>
                         </div>
-                        <% })%>
-                            <% if(campground.images.length>1){ %>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                                <% } %>
-                </div>
-            </div>
-            <!-- DISPLAYING CAMPGROUND DETAILS -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= campground.title %>
-                    </h5>
-                    <p class="card-text">
-                        <%= campground.description %>
-                    </p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted">
-                        <%= campground.location %>
-                    </li>
-                    <li class="list-group-item">Sbumitted by-
-                        <b>
-                            <%= campground.author.username %>
-                        </b>
-                    </li>
-                    <li class="list-group-item">Price- $<%= campground.price %>/night</li>
-                </ul>
-                <!-- GIVING ACCESS TO EDIT/DELETE BUTTONS FOR A CAMPGROUND IF CURRENT USER IS AUTHOR -->
-                <% if(currentUser && (campground.author.equals(currentUser._id))){ %>
-                    <div class="card-body">
-                        <a class="card-link btn btn-info" href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
-                        <form class="d-inline" action="/campgrounds/<%= campground._id%>?_method=DELETE " method="post">
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
+                        <% if(campground.images.length>1){ %>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <% } %>
                     </div>
-                    <% } %>
-                        <div class="card-footer">2 days ago </div>
+                    <% } else{%>
+                        <img src="https://res.cloudinary.com/dbmrc41ir/image/upload/v1676299816/YelpCamp/df48rbajgpazpzsh9zg5.avif"
+                            alt="No Image Available" class="img-fluid" crossorigin>
+                        <% } %>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= campground.title %>
+                                </h5>
+                                <p class="card-text">
+                                    <%= campground.description %>
+                                </p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-muted">
+                                    <%= campground.location %>
+                                </li>
+                                <li class="list-group-item">Sbumitted by-
+                                    <b>
+                                        <%= campground.author.username %>
+                                    </b>
+                                </li>
+                                <li class="list-group-item">Price- $<%= campground.price %>/night</li>
+                            </ul>
+                            <!-- GIVING ACCESS TO EDIT/DELETE BUTTONS FOR A CAMPGROUND IF CURRENT USER IS AUTHOR -->
+                            <% if(currentUser && (campground.author.equals(currentUser._id))){ %>
+                                <div class="card-body">
+                                    <a class="card-link btn btn-info"
+                                        href="/campgrounds/<%= campground._id %>/edit ">Edit</a>
+                                    <form class="d-inline" action="/campgrounds/<%= campground._id%>?_method=DELETE "
+                                        method="post">
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                                <% } %>
+                                    <div class="card-footer">2 days ago </div>
             </div>
-            <a href="/campgrounds" class="btn btn-danger mb-2">Back</a>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6">
             <!-- DISPLAYING THE MAP OF CURRENT CAMPGROUND -->
             <div id="map" class="mb-3"></div>
             <% if(campground.reviews.length===0){ %>
@@ -129,6 +136,7 @@
                                         </div>
                                         <% } %>
                                             <% } %>
+                                                <a href="/campgrounds" class="btn btn-danger mb-2">Back</a>
 
 
         </div>
