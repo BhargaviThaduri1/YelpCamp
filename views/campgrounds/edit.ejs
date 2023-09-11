@@ -1,70 +1,47 @@
-<!-- Adding the layout which takes the current html as the body for the view -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <% layout('layouts/boilerplate') -%>
-
-  <!-- Row -->
-  <div class="row">
-
-    <h1 class="text-center">Edit Camground</h1>
-
-    <!--Centering the form to the center by using offset   -->
-    <div class="col-md-6 offset-md-3">
-      <form action="/campgrounds/<%= campground._id %>/edit?_method=PUT " method="post" class="validate-form"
-        novalidate>
-
-        <!-- Campground Title -->
-        <div class="mb-3">
-          <label class="form-label" for="title">Title</label>
-          <input class="form-control" type="text" name="campground[title]" id="title" value="<%= campground.title %> "
-            required>
-          <div class="valid-feedback">
-            Looks good!
-          </div>
-        </div>
-
-        <!-- Campground Loaction -->
-        <div class="mb-3">
-          <label class="form-label" for="loc">Location</label>
-          <input class="form-control" type="text" name="campground[location]" id="loc"
-            value="<%= campground.location %> " required>
-          <div class="valid-feedback">
-            Looks good!
-          </div>
-        </div>
-        <!-- Campground Price -->
-        <div class="mb-3">
-          <label class="form-label" for="image">Price</label>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="price">$</span>
-            </div>
-            <input type="text" class="form-control" placeholder="0.00" aria-label="Username" id="price"
-              value="<%= campground.price %> " name="campground[price]" aria-describedby="price" required>
-            <div class="valid-feedback">
-              Looks good!
-            </div>
-          </div>
-        </div>
-
-        <!-- Campground Description -->
-        <div class="mb-3">
-          <label class="form-label" for="description">Description </label>
-          <textarea class="form-control px-0" type="text" name="campground[description]" id="description" required>
-             <%= campground.description %> 
-            </textarea>
-          <div class="valid-feedback">
-            Looks good!
-          </div>
-        </div>
-
-        <!-- Edit button -->
-        <div class="mb-3 ">
-          <button class="btn btn-success">Edit Campground</button>
-          <a href="/campgrounds/<%=campground._id%>/images/show" class="btn btn-info">Manage Images</a>
-
-        </div>
-      </form>
-      <div class="mb-3">
-        <a href="/campgrounds/<%= campground._id %> " class="btn btn-secondary">Go Back</a>
-      </div>
+    <div id="cluster-map" class="sticky-top" style="z-index: auto;" >
     </div>
-  </div>
+    <h1>All Campgrounds!</h1>
+    <div class="mb-3 my-3" style="z-index:-2;">
+        <a href="/" class="btn btn-info ">Home</a>
+        <a href="/campgrounds/new" class="btn btn-warning mx-2">New Campground</a>
+
+    </div>
+    <!-- for every campground styling it in a card with 2 columns 1-> image 2-> description -->
+    <% for(let campground of campgrounds){ %>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if(campground.images.length){ %>
+                        <img src="<%= campground.images[0].url %> " alt="" class="img-fluid w-100 h-100">
+                        <% }else{ %>
+                            <img src="https://res.cloudinary.com/dbmrc41ir/image/upload/v1676299816/YelpCamp/df48rbajgpazpzsh9zg5.avif"
+                                alt="" class="img-fluid">
+                            <% } %>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= campground.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%=campground.description %>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= campground.location %>
+                            </small>
+                        </p>
+                        <a href="/campgrounds/<%= campground._id %> " class="btn btn-success btn-lg text-white">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+            <script>
+                let mapboxToken = `<%-process.env.MAPBOX_TOKEN%>`;
+                let campgrounds = `<%-JSON.stringify(campgrounds)%>`
+            </script>
+            <script src="/javascripts/clusterMap.js"></script>
